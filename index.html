@@ -6,7 +6,7 @@
 
     <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
 
-    <title>Frontend Mentor | IP Address Tracker</title>
+    <title>IP Address Tracker</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,28 +127,11 @@
             }
             
             aside {
-/*
-                width: 70vw;
-                padding: 3vh 2vw;
-                box-sizing: border-box;
-                position: absolute;
-                top: 25vh;
-                left: 15vw;
-                z-index: 2;
-                border-radius: 10px;
-                display: flex;
-*/
                 width: 90vw;
                 padding: 3vh 0;
                 top: 23vh;
                 left: 5vw;
                 flex-direction: column;
-/*
-                justify-content: space-around;
-                align-self: flex-start;
-                align-items: flex-start;
-                background-color: white;
-*/
             }
 
             aside div {
@@ -158,18 +141,11 @@
             aside div h5 {
                 text-align: center;
                 margin-top: 2px;
-/*
-                text-transform: uppercase;
-                font-weight: 550;
-                letter-spacing: 1px;
-                color: hsl(0, 0%, 59%);
-*/
             }
 
             aside div h1 {
                 text-align: center;
                 font-size: 18px;
-/*                color: hsl(0, 0%, 17%);*/
             }
         }
         
@@ -177,9 +153,9 @@
             body { display: none; }
         }
         
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+        .attribution { font-size: 11px; text-align: center; }
+        .attribution a { color: hsl(228, 45%, 44%); }
+    </style>
 </head>
 <body>
     
@@ -189,79 +165,70 @@
         <aside>
             <div>
                 <h5>IP Address</h5>
-                <h1 id="ip">192.212.714.101</h1>
+                <h1 id="ip">--</h1>
             </div>
             <div class="partition"></div>
             <div>
                 <h5>Location</h5>
-                <h1 id="location">Brooklyn, NY 1001</h1>
+                <h1 id="location">--</h1>
             </div>
             <div>
                 <h5>Timezone</h5>
-                <h1 id="timezone">UTC-05:00</h1>
+                <h1 id="timezone">--</h1>
             </div>
             <div>
                 <h5>ISP</h5>
-                <h1 id="isp">SpaceX Starlink</h1>
+                <h1 id="isp">--</h1>
             </div>
         </aside>
     </div>
     <div id="map"></div>
-  <!--
-  IP Address Tracker
-
-  Search for any IP address or domain
-
-  IP Address
-  Location
-  Timezone
-    UTC <!-- add offset value dynamically using the API 
-  ISP
--->
-  <div id="demo"></div>
+    <div id="demo"></div>
   
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
     Coded by <a href="#">Nishtha Patel</a>.
   </div>
   <script>
-      let latitude = 0;
-      let longitude = 0;
-      var mymap;
-      getIPInformation('8.8.8.8')
-    
-      function getIPInformation(ip = document.getElementById('ip-input').value) {
-          const xhttp = new XMLHttpRequest();
-          xhttp.open("GET", "https://geo.ipify.org/api/v1?apiKey=at_PAT9mXRC7SFNiB9a3yolAHaCin9cW&ipAddress="+ip, false);
-          xhttp.send();
-          if(JSON.parse(xhttp.responseText)['code']) {
-              xhttp.open("GET", "https://geo.ipify.org/api/v1?apiKey=at_PAT9mXRC7SFNiB9a3yolAHaCin9cW&ipAddress=8.8.8.8", false);
-              xhttp.send();
-              latitude = JSON.parse(xhttp.responseText)['location']['lat']
-              longitude = JSON.parse(xhttp.responseText)['location']['lng']
-          } else  {
-              latitude = JSON.parse(xhttp.responseText)['location']['lat']
-              longitude = JSON.parse(xhttp.responseText)['location']['lng']
-          }
-          createMap(latitude, longitude)
-          document.getElementById('ip').textContent = ip;
-          document.getElementById('location').textContent = JSON.parse(xhttp.responseText)['location']['city'] + ', ' + JSON.parse(xhttp.responseText)['location']['region'] + ' ' + JSON.parse(xhttp.responseText)['location']['postalCode'];
-          document.getElementById('timezone').textContent = JSON.parse(xhttp.responseText)['location']['timezone'];
-          document.getElementById('isp').textContent = JSON.parse(xhttp.responseText)['isp'];
-      }
-      
-      function createMap(ltd, lng) {
-            var mymap = L.map('map', {zoomControl: false}).setView([ltd, lng], 13);
-            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                maxZoom: 18,
-                id: 'mapbox/streets-v11',
-                tileSize: 512,
-                zoomOffset: -1,
-                accessToken: 'sk.eyJ1IjoibnAxZ29hbCIsImEiOiJja3Q0b3R1eHEwMG9jMnduejJrNTZiMXRtIn0.ZR2hjKG12Uju9dOH55uJ6A'
-            }).addTo(mymap);
-            var marker = L.marker([ltd, lng]).addTo(mymap);
-      }
+        let latitude = 0;
+        let longitude = 0;
+        let map = L.map('map', {zoomControl: false}).setView([51.505, -0.09], 13);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'sk.eyJ1IjoibnAxZ29hbCIsImEiOiJja3Q0b3R1eHEwMG9jMnduejJrNTZiMXRtIn0.ZR2hjKG12Uju9dOH55uJ6A'
+        }).addTo(map);      
+        let marker = L.marker([51.505, -0.09]).addTo(map);
+          
+        function getIPInformation(ip = document.getElementById('ip-input').value) {
+            L.marker([latitude, longitude]).remove(map)
+            marker.remove()
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "https://geo.ipify.org/api/v1?apiKey=at_PAT9mXRC7SFNiB9a3yolAHaCin9cW&ipAddress="+ip, false);
+            xhttp.send();
+            if(JSON.parse(xhttp.responseText)['code']) {
+                xhttp.open("GET", "https://geo.ipify.org/api/v1?apiKey=at_PAT9mXRC7SFNiB9a3yolAHaCin9cW&ipAddress=8.8.8.8", false);
+                xhttp.send();
+                latitude = JSON.parse(xhttp.responseText)['location']['lat']
+                longitude = JSON.parse(xhttp.responseText)['location']['lng']
+            } else  {
+                latitude = JSON.parse(xhttp.responseText)['location']['lat']
+                longitude = JSON.parse(xhttp.responseText)['location']['lng']
+            }
+            createMap(latitude, longitude)
+            document.getElementById('ip').textContent = ip;
+            document.getElementById('location').textContent = JSON.parse(xhttp.responseText)['location']['city'] + ', ' + JSON.parse(xhttp.responseText)['location']['region'] + ' ' + JSON.parse(xhttp.responseText)['location']['postalCode'];
+            document.getElementById('timezone').textContent = JSON.parse(xhttp.responseText)['location']['timezone'];
+            document.getElementById('isp').textContent = JSON.parse(xhttp.responseText)['isp'];
+        }
+
+        function createMap(ltd, lng) {
+            map.panTo(new L.LatLng(ltd, lng));
+            marker = L.marker([ltd, lng]).addTo(map);
+        }
   </script>
 </body>
 </html>
